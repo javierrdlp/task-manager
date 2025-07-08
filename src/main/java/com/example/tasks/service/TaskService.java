@@ -24,7 +24,9 @@ public class TaskService {
         if(task.getPriority() == 1){
             long daysBetween = task.getDeadLine().toEpochDay() - task.getCreationDate().toEpochDay();
             if(daysBetween > 3){
-                throw new IllegalArgumentException("For high priority tasks, deadline must be within 3 days after creation date");
+                throw new IllegalArgumentException(
+                        "For high priority tasks, deadline must be within 3 days after creation date"
+                );
             }
         }
 
@@ -50,5 +52,13 @@ public class TaskService {
             throw new IllegalArgumentException("Task with id " + id + " does not exist");
         }
         taskRepository.deleteById(id);
+    }
+
+    public Task updateTask(Long id, TaskDTO dto){
+        Task existingTask = taskRepository.findById(id)
+                                  .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+        existingTask.updateFromDTO(dto);
+        return taskRepository.save(existingTask);
     }
 }

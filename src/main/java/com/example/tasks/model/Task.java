@@ -1,5 +1,6 @@
 package com.example.tasks.model;
 
+import com.example.tasks.dto.TaskDTO;
 import com.example.tasks.model.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,5 +36,14 @@ public class Task {
     private LocalDate deadLine;
 
     private LocalDate creationDate;
+
+    public void updateFromDTO(TaskDTO dto) {
+        this.title = dto.getTitle();
+        this.description = dto.getDescription();
+        this.responsible = dto.getResponsible();
+        this.status = dto.getStatus();
+        this.priority = dto.getPriority();
+        this.deadLine = dto.getDeadLine();
+    }
 
 }
