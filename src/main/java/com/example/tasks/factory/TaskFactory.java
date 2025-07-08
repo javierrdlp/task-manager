@@ -9,6 +9,11 @@ public class TaskFactory {
         return Task.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
+                .responsible(dto.getResponsible())
+                .status(dto.getStatus())
+                .priority(dto.getPriority())
+                .deadLine(dto.getDeadLine())
+                .creationDate(dto.getCreationDate())
                 .build();
     }
 
@@ -16,6 +21,11 @@ public class TaskFactory {
         return TaskDTO.builder()
                 .title(task.getTitle())
                 .description(task.getDescription())
+                .responsible(task.getResponsible())
+                .status(task.getStatus())
+                .priority(task.getPriority())
+                .deadLine(task.getDeadLine())
+                .creationDate(task.getCreationDate())
                 .build();
     }
 }
