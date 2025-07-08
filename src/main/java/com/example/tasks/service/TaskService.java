@@ -4,6 +4,7 @@ import com.example.tasks.dto.TaskDTO;
 import com.example.tasks.factory.TaskFactory;
 import com.example.tasks.model.Task;
 import com.example.tasks.repository.TaskRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class TaskService {
 
     public List<Task> getAllTasks(){
         return taskRepository.findAll();
+    }
+
+    public List<Task> getTasksByPriority() {
+        return taskRepository.findAll(Sort.by("deadLine").ascending());
     }
 
     public Task getTask(Long id){
