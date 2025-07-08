@@ -3,6 +3,7 @@ package com.example.tasks.service;
 import com.example.tasks.dto.TaskDTO;
 import com.example.tasks.factory.TaskFactory;
 import com.example.tasks.model.Task;
+import com.example.tasks.model.enums.TaskStatus;
 import com.example.tasks.repository.TaskRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,9 @@ public class TaskService {
         Task existingTask = taskRepository.findById(id)
                                   .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
 
+        if(existingTask.getStatus() == TaskStatus.COMPLETED){
+            throw new IllegalArgumentException("Task with COMPLETED status cannot be update");
+        }
         existingTask.updateFromDTO(dto);
         return taskRepository.save(existingTask);
     }
