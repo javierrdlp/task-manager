@@ -5,7 +5,6 @@ import com.example.tasks.factory.TaskFactory;
 import com.example.tasks.model.Task;
 import com.example.tasks.repository.TaskRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -19,6 +18,15 @@ public class TaskService {
 
     public Task createTask(TaskDTO dto){
         Task task = TaskFactory.toTask(dto);
+
+        //Check date compatibility with priority
+        if(task.getPriority() == 1){
+            long daysBetween = task.getDeadLine().toEpochDay() - task.getCreationDate().toEpochDay();
+            if(daysBetween > 3){
+                throw new IllegalArgumentException("For high priority tasks, deadline must be within 3 days after creation date");
+            }
+        }
+
         return taskRepository.save(task);
     }
 
