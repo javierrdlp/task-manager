@@ -18,15 +18,18 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     private String description;
 
+    @Column(nullable = false)
     private String responsible;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
+    @Column(nullable = false)
     private Integer priority;
 
     private LocalDate deadLine;
