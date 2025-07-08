@@ -39,4 +39,11 @@ public class TaskService {
                              .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
 
     }
+
+    public void deleteTask(Long id){
+        if (!taskRepository.existsById(id)) {
+            throw new IllegalArgumentException("Task with id " + id + " does not exist");
+        }
+        taskRepository.deleteById(id);
+    }
 }
