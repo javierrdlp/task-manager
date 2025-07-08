@@ -2,6 +2,7 @@ package com.example.tasks.controller;
 
 import com.example.tasks.dto.TaskDTO;
 import com.example.tasks.service.TaskService;
+import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,11 @@ public class TaskController {
     public ResponseEntity<List<Task>> getAllTasks(){
         List<Task> taskList = taskService.getAllTasks();
         return ResponseEntity.ok(taskList);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTask(@PathVariable Long id){
+        Task task = taskService.getTask(id);
+        return ResponseEntity.ok(task);
     }
 }
