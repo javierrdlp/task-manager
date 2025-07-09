@@ -39,7 +39,7 @@ public class TaskService {
     }
 
     public List<Task> getTasksByPriority() {
-        return taskRepository.findAll(Sort.by("deadLine").ascending());
+        return taskRepository.findAll(Sort.by("priority").ascending());
     }
 
     public Task getTask(Long id){

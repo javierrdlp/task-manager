@@ -7,6 +7,7 @@ import com.example.tasks.model.enums.TaskStatus;
 import com.example.tasks.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -76,7 +77,7 @@ public class TaskServiceTest {
                 Task.builder().title("Task3").responsible("Responsible3").priority(3).build()
         );
 
-        when(taskRepository.findAll()).thenReturn(tasks);
+        when(taskRepository.findAll(Sort.by("priority").ascending())).thenReturn(tasks);
 
         List<Task> results = taskService.getTasksByPriority();
 
@@ -85,7 +86,7 @@ public class TaskServiceTest {
         assertEquals(2, results.get(1).getPriority());
         assertEquals(3, results.get(2).getPriority());
 
-        verify(taskRepository, times(1)).findAll();
+        verify(taskRepository, times(1)).findAll(Sort.by("priority").ascending());
 
     }
     @Test
