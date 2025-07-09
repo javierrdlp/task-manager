@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,6 +47,26 @@ public class TaskServiceTest {
         verify(taskRepository, times(1)).save(any(Task.class));
     }
 
+    @Test
+    void testGetAllTasks_returnsTaskList(){
+        List<Task> tasks = List.of(
+                Task.builder().title("Task1").responsible("Responsible1").priority(1).build(),
+                Task.builder().title("Task2").responsible("Responsible2").priority(2).build(),
+                Task.builder().title("Task3").responsible("Responsible3").priority(3).build()
+        );
+
+        when(taskRepository.findAll()).thenReturn(tasks);
+
+        List<Task> results = taskService.getAllTasks();
+
+        assertEquals(3, results.size());
+        assertEquals("Task1", results.get(0).getTitle());
+        assertEquals("Responsible2", results.get(1).getResponsible());
+        assertEquals(3, results.get(2).getPriority());
+
+        verify(taskRepository, times(1)).findAll();
+
+    }
     @Test
     void testGetTask_whenNotFound_throwsException() {
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
