@@ -70,7 +70,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void testGetAllTasksSortedByPriority_returnsTaskList(){
+    void testGetTasksByPriority_returnsTaskList(){
         List<Task> tasks = List.of(
                 Task.builder().title("Task1").responsible("Responsible1").priority(1).build(),
                 Task.builder().title("Task2").responsible("Responsible2").priority(2).build(),
@@ -88,6 +88,19 @@ public class TaskServiceTest {
 
         verify(taskRepository, times(1)).findAll(Sort.by("priority").ascending());
 
+    }
+
+    @Test
+    void testGetTask(){
+        Task task = Task.builder().id(1L).title("Task1").responsible("Responsible1").priority(1).build();
+
+        when(taskRepository.findById(1L)).thenReturn(Optional.ofNullable(task));
+
+        Task result = taskService.getTask(1L);
+
+        assertEquals(1L, result.getId());
+
+        verify(taskRepository, times(1)).findById(1L);
     }
     @Test
     void testGetTask_whenNotFound_throwsException() {
