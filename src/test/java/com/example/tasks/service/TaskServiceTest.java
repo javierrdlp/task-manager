@@ -110,4 +110,24 @@ public class TaskServiceTest {
 
         assertEquals("Task not found with id: 1", exception.getMessage());
     }
+
+    @Test
+    void testDeleteTask(){
+
+        when(taskRepository.existsById(1L)).thenReturn(true);
+
+        taskService.deleteTask(1L);
+
+        verify(taskRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testDeleteTask_WithNotFound_throwsException(){
+
+        when(taskRepository.existsById(1L)).thenReturn(false);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> taskService.deleteTask(1L));
+
+        assertEquals("Task not found with id: 1", exception.getMessage());
+    }
 }
