@@ -113,7 +113,6 @@ public class TaskServiceTest {
 
     @Test
     void testDeleteTask(){
-
         when(taskRepository.existsById(1L)).thenReturn(true);
 
         taskService.deleteTask(1L);
@@ -123,11 +122,27 @@ public class TaskServiceTest {
 
     @Test
     void testDeleteTask_WithNotFound_throwsException(){
-
         when(taskRepository.existsById(1L)).thenReturn(false);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> taskService.deleteTask(1L));
 
         assertEquals("Task not found with id: 1", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateTask(){
+        Task task = Task.builder().id(1L).title("Task1").responsible("Responsible1").priority(1).build();
+
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+
+        Task result = taskService.updateTask(1L, TaskDTO.builder().title("Task1 updated").responsible("Responsible1 updated").priority(2).build());
+
+        assertEquals("Task1 updated", result.getTitle());
+        assertEquals("Responsible1 updated", result.getResponsible());
+        assertEquals(2, result.getPriority());
+
+        verify(taskRepository, times(1)).save(any(Task.class));
     }
 }
